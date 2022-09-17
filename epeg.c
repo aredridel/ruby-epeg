@@ -29,7 +29,7 @@ static VALUE rb_epeg_thumbnail(klass, fname, x, y)
 		rb_raise(rb_eStandardError, "Can't encode image");
 	}
 	epeg_close(image);
-	retval = rb_str_new(data, size);
+	retval = rb_str_new((const char *)data, size);
 	free(data);
 	return retval;
 }
@@ -71,7 +71,6 @@ rb_epeg_set_output_size(obj, x, y)
 	VALUE obj, x, y;
 {
 	Epeg_Image *image;
-	VALUE retval;
 	if(OBJ_FROZEN(obj)) {
 		rb_raise(rb_eStandardError, "can't set size now");
 	}
@@ -112,7 +111,7 @@ rb_epeg_finish(argc, args, obj)
 	epeg_close(image);
 	OBJ_FREEZE(obj);
 	if(argc == 0) {
-		retval = rb_str_new(data, size);
+		retval = rb_str_new((const char *)data, size);
 		free(data);
 		return retval;
 	} else {
